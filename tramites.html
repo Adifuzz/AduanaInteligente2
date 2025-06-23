@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trámites Vehiculares</title>
+  <link rel="stylesheet" href="css/tramites.css">
+</head>
+<body>
+
+<!-- === NAVBAR === -->
+<header class="navbar">
+  <div class="logo">Aduana Digital</div>
+  <nav class="nav-links">
+    <button onclick="location.href='index.html'" class="btn-nav">Inicio</button>
+    <a href="tramites.html">Trámites</a>
+    <a href="reporte.html">Estadísticas</a>
+    <a href="login.html">Acceso Usuarios</a>
+  </nav>
+  <a class="login-button" href="login.html">Iniciar Sesión</a>
+</header>
+
+<!-- === FORMULARIO DE TRÁMITES === -->
+<section class="form-section">
+  <h2>Formulario: Salida Temporal de Vehículos</h2>
+  <form id="form-tramite" class="form">
+    <input type="text" id="nombre" placeholder="Nombre completo" required>
+    <input type="text" id="rut" placeholder="RUT" required>
+    <input type="text" id="nacionalidad" placeholder="Nacionalidad" required>
+    <input type="text" id="patente" placeholder="Patente del vehículo" required>
+    <input type="date" id="fecha" required>
+
+    <div class="form-buttons">
+      <button type="submit" class="btn-primary">Guardar Trámite</button>
+      <button type="reset" class="btn-secondary">Limpiar</button>
+    </div>
+  </form>
+</section>
+
+<!-- === FOOTER === -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-col">
+      <h4>Institución</h4>
+      <p>Dirección Nacional de Aduanas</p>
+      <p>Chile</p>
+    </div>
+    <div class="footer-col">
+      <h4>Enlaces útiles</h4>
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Documentos</a></li>
+        <li><a href="#">Vehículos</a></li>
+        <li><a href="#">Estadísticas</a></li>
+        <li><a href="#">Acceso</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Términos de uso</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Dirección Nacional de Aduanas - Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- === SCRIPT PARA GUARDAR EN LOCALSTORAGE === -->
+<script>
+  document.getElementById("form-tramite").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const tramite = {
+      nombre: document.getElementById("nombre").value.trim(),
+      rut: document.getElementById("rut").value.trim(),
+      nacionalidad: document.getElementById("nacionalidad").value.trim(),
+      patente: document.getElementById("patente").value.trim(),
+      fecha: document.getElementById("fecha").value
+    };
+
+    if (Object.values(tramite).some(v => v === "")) {
+      alert("Por favor complete todos los campos.");
+      return;
+    }
+
+    // Obtener o crear el arreglo en localStorage
+    const datosGuardados = JSON.parse(localStorage.getItem("tramites")) || [];
+
+    // Agregar nuevo trámite
+    datosGuardados.push(tramite);
+
+    // Guardar en localStorage
+    localStorage.setItem("tramites", JSON.stringify(datosGuardados));
+
+    alert("Trámite guardado correctamente.");
+
+    // Opcional: limpiar el formulario
+    this.reset();
+  });
+</script>
+</body>
+</html>

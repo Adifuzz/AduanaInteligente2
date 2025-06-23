@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+<!-- === HEADER / NAVBAR === -->
+<header class="navbar">
+  <div class="logo">Aduana Digital</div>
+  <nav class="nav-links">
+    <button onclick="location.href='index.html'" class="btn-nav">Inicio</button>
+    <a href="tramites.html">Trámites</a>
+    <a href="reporte.html">Estadísticas</a>
+    <a href="login.html">Acceso Usuarios</a>
+  </nav>
+  <a class="login-button" href="login.html">Iniciar Sesión</a>
+</header>
+
+<!-- === FORMULARIO DE LOGIN === -->
+<section class="login-container">
+  <div class="login-box">
+    <h2>Iniciar Sesión</h2>
+    <form onsubmit="login(event)">
+      <label for="usuario">Usuario:</label>
+      <input type="text" id="usuario" name="usuario" required>
+
+      <label for="password">Contraseña:</label>
+      <input type="password" id="password" name="password" required>
+
+      <label for="rol">Rol:</label>
+      <select id="rol" name="rol" required>
+        <option value="">Seleccione</option>
+        <option value="admin">Administrador</option>
+        <option value="funcionario">Funcionario</option>
+        <option value="ciudadano">Ciudadano</option>
+      </select>
+
+      <button type="submit" class="btn-primary">Entrar</button>
+    </form>
+  </div>
+</section>
+
+<!-- === FOOTER === -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-col">
+      <h4>Institución</h4>
+      <p>Dirección Nacional de Aduanas</p>
+      <p>Chile</p>
+    </div>
+    <div class="footer-col">
+      <h4>Enlaces útiles</h4>
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Documentos</a></li>
+        <li><a href="#">Vehículos</a></li>
+        <li><a href="#">Estadísticas</a></li>
+        <li><a href="#">Acceso</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Términos de uso</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Dirección Nacional de Aduanas - Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- === SCRIPT DE LOGIN Y SESIÓN === -->
+<script>
+  function login(event) {
+    event.preventDefault();
+
+    const usuario = document.getElementById("usuario").value.trim();
+    const password = document.getElementById("password").value;
+    const rol = document.getElementById("rol").value;
+
+    if (usuario && password && rol) {
+      const datosUsuario = { usuario, rol };
+      localStorage.setItem("usuarioLogueado", JSON.stringify(datosUsuario));
+      alert("Inicio de sesión exitoso.");
+      window.location.href = "index.html"; // Redirige al inicio u otra página
+    } else {
+      alert("Por favor complete todos los campos.");
+    }
+  }
+
+  function cerrarSesion() {
+    localStorage.removeItem("usuarioLogueado");
+    alert("Sesión cerrada exitosamente.");
+    window.location.href = "login.html";
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    const loginBtn = document.querySelector(".login-button");
+
+    if (usuario) {
+      loginBtn.textContent = "Cerrar Sesión";
+      loginBtn.href = "#";
+      loginBtn.addEventListener("click", cerrarSesion);
+    }
+  });
+</script>
+
+</body>
+</html>

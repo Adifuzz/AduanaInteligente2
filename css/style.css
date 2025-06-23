@@ -1,0 +1,165 @@
+/* === VARIABLES GLOBALES === */
+:root {
+  --azul-principal: rgb(10, 36, 122);
+  --blanco: #ffffff;
+  --hover-blanco: #e0efff;
+  --texto-normal: #ffffff;
+  --gris-claro: #f3f3f3;
+  --borde-suave: 8px;
+  --font-principal: 'Inter', sans-serif;
+}
+
+/* === ESTILO BASE === */
+body {
+  margin: 0;
+  font-family: var(--font-principal);
+  background-color: var(--blanco);
+}
+
+/* === NAVBAR === */
+.navbar {
+  background-color: var(--azul-principal);
+  color: var(--texto-normal);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--blanco);
+}
+
+.nav-links {
+  display: flex;
+  gap: 40px;
+}
+
+.nav-links a {
+  color: var(--texto-normal);
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--hover-blanco);
+}
+
+.login-button {
+  background-color: var(--blanco);
+  color: var(--azul-principal);
+  padding: 10px 20px;
+  border-radius: var(--borde-suave);
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: var(--hover-blanco);
+}
+
+/* === SECCIÓN DE MÓDULOS === */
+.module-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 40px;
+  padding: 60px 80px;
+  background-color: var(--blanco);
+}
+
+.module-card {
+  background-color: var(--blanco);
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  text-align: center;
+}
+
+.module-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border-color: #c2dbff;
+}
+
+.module-card .icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+  color: var(--azul-principal);
+}
+
+.module-card h3 {
+  font-size: 18px;
+  color: var(--azul-principal);
+  margin: 0 0 10px;
+}
+
+.module-card p {
+  color: #444;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* === FOOTER === */
+.footer {
+  background-color: var(--azul-principal);
+  color: var(--blanco);
+  padding: 40px 80px 20px;
+  font-size: 15px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer-col {
+  flex: 1 1 200px;
+}
+
+.footer-col h4 {
+  font-size: 16px;
+  margin-bottom: 16px;
+  color: var(--blanco);
+  border-bottom: 1px solid #ffffff22;
+  padding-bottom: 6px;
+}
+
+.footer-col p,
+.footer-col li {
+  margin: 6px 0;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col a {
+  color: var(--blanco);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-col a:hover {
+  color: #c2dbff;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 13px;
+  color: #ffffffaa;
+  border-top: 1px solid #ffffff22;
+  padding-top: 12px;
+}

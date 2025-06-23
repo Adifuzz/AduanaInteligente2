@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reporte de Trámites</title>
+  <link rel="stylesheet" href="css/reportes.css">
+  <style>
+    .export-buttons {
+      margin-top: 20px;
+      display: flex;
+      gap: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: var(--azul-principal);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<!-- === NAVBAR === -->
+<header class="navbar">
+  <div class="logo">Aduana Digital</div>
+  <nav class="nav-links">
+    <button onclick="location.href='index.html'" class="btn-nav">Inicio</button>
+    <a href="tramites.html">Trámites</a>
+    <a href="reporte.html">Estadísticas</a>
+    <a href="login.html">Acceso Usuarios</a>
+  </nav>
+  <a class="login-button" href="login.html">Iniciar Sesión</a>
+</header>
+
+<!-- === CONTENIDO DEL REPORTE === -->
+<section class="module-section">
+  <h2>Reporte de Trámites Vehiculares</h2>
+
+  <div class="module-card">
+    <div class="export-buttons">
+      <button onclick="exportarComoCSV()" class="btn-secondary">Exportar CSV</button>
+      <button onclick="exportarComoPDF()" class="btn-secondary">Exportar PDF</button>
+      <button onclick="exportarComoExcel()" class="btn-secondary">Exportar Excel</button>
+    </div>
+
+    <table id="tabla-reporte">
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>RUT</th>
+        <th>Nacionalidad</th>
+        <th>Patente</th>
+        <th>Fecha</th>
+      </tr>
+      </thead>
+      <tbody id="cuerpo-tabla">
+      <!-- Datos insertados con JS -->
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- === FOOTER === -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-col">
+      <h4>Institución</h4>
+      <p>Dirección Nacional de Aduanas</p>
+      <p>Chile</p>
+    </div>
+    <div class="footer-col">
+      <h4>Enlaces útiles</h4>
+      <ul>
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Documentos</a></li>
+        <li><a href="#">Vehículos</a></li>
+        <li><a href="#">Estadísticas</a></li>
+        <li><a href="#">Acceso</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Términos de uso</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Dirección Nacional de Aduanas - Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- === LIBRERÍAS Y SCRIPTS === -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const datos = JSON.parse(localStorage.getItem("tramites")) || [];
+    const cuerpo = document.getElementById("cuerpo-tabla");
+
+    datos.forEach(tramite => {
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td>${tramite.nombre}</td>
+        <td>${tramite.rut}</td>
+        <td>${tramite.nacionalidad}</td>
+        <td>${tramite.patente}</td>
+        <td>${tramite.fecha}</td>
+      `;
+      cuerpo.appendChild(fila);
+    });
+  });
+
+  function exportarComoCSV() {
+    const datos = JSON.parse(localStorage.getItem("tramites")) || [];
+    let csv = "Nombre,RUT,Nacionalidad,Patente,Fecha\n";
+    datos.forEach(d => {
+      csv += `${d.nombre},${d.rut},${d.nacionalidad},${d.patente},${d.fecha}\n`;
+    });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "reporte_tramites.csv";
+    a.click();
+  }
+
+  function exportarComoPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    const datos = JSON.parse(localStorage.getItem("tramites")) || [];
+    const filas = datos.map(t => [t.nombre, t.rut, t.nacionalidad, t.patente, t.fecha]);
+    doc.autoTable({
+      head: [["Nombre", "RUT", "Nacionalidad", "Patente", "Fecha"]],
+      body: filas,
+    });
+    doc.save("reporte_tramites.pdf");
+  }
+
+  function exportarComoExcel() {
+    const datos = (JSON.parse(localStorage.getItem("tramites")) || []).map(t => ({
+      Nombre: t.nombre,
+      RUT: t.rut,
+      Nacionalidad: t.nacionalidad,
+      Patente: t.patente,
+      Fecha: t.fecha
+    }));
+    const ws = XLSX.utils.json_to_sheet(datos);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Trámites");
+    XLSX.writeFile(wb, "reporte_tramites.xlsx");
+  }
+    document.addEventListener("DOMContentLoaded", () => {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogueado"));
+
+    if (!usuario || (usuario.rol !== "admin" && usuario.rol !== "funcionario")) {
+    alert("Acceso restringido: solo administradores o funcionarios pueden ver esta página.");
+    window.location.href = "index.html"; // o redirigir a login.html
+  }
+  });
+
+
+</script>
+</body>
+</html>
